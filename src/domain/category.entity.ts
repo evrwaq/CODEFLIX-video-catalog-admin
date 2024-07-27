@@ -8,7 +8,8 @@ export type CategoryConstructorProps = {
 
 export type CategoryCreateCommand = {
   name: string;
-  description?: string | null
+  description?: string | null;
+  is_active?: boolean | null;
 }
 
 export class Category {
