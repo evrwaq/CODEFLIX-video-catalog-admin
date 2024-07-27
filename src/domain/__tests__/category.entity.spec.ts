@@ -77,4 +77,12 @@ describe('Category Unit Tests', () => {
       expect(category.created_at).toBeInstanceOf(Date);
     })
   })
+
+  test('Should change name', () => {
+    const category = new Category({
+      name: 'Movie'
+    });
+    category.changeName('Movie changed');
+    expect(category.name).toBe('Movie changed');
+  })
 })
