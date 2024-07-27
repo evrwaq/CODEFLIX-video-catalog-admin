@@ -40,4 +40,17 @@ describe('Category Unit Tests', () => {
       expect(category.created_at).toBeInstanceOf(Date);
     })
   })
+
+  describe('create command', () => {
+    test('Should create a category', () => {
+      const category = Category.create({
+        name: 'Movie'
+      });
+      expect(category.category_id).toBeUndefined();
+      expect(category.name).toBe('Movie');
+      expect(category.description).toBeNull();
+      expect(category.is_active).toBe(true);
+      expect(category.created_at).toBeInstanceOf(Date);
+    })
+  })
 })
