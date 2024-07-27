@@ -94,4 +94,13 @@ describe('Category Unit Tests', () => {
     category.changeDescription('Movie description changed');
     expect(category.description).toBe('Movie description changed');
   })
+
+  test('Should activate a category', () => {
+    const category = new Category({
+      name: 'Movie',
+      is_active: false
+    });
+    category.activate();
+    expect(category.is_active).toBe(true);
+  })
 })
