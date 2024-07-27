@@ -79,7 +79,7 @@ describe('Category Unit Tests', () => {
   })
 
   test('Should change name', () => {
-    const category = new Category({
+    const category = Category.create({
       name: 'Movie'
     });
     category.changeName('Movie changed');
@@ -87,7 +87,7 @@ describe('Category Unit Tests', () => {
   })
 
   test('Should change description', () => {
-    const category = new Category({
+    const category = Category.create({
       name: 'Movie',
       description: 'Movie description'
     });
@@ -96,11 +96,20 @@ describe('Category Unit Tests', () => {
   })
 
   test('Should activate a category', () => {
-    const category = new Category({
+    const category = Category.create({
       name: 'Movie',
       is_active: false
     });
     category.activate();
     expect(category.is_active).toBe(true);
+  })
+
+  test('Should deactivate a category', () => {
+    const category = Category.create({
+      name: 'Movie',
+      is_active: true
+    });
+    category.deactivate();
+    expect(category.is_active).toBe(false);
   })
 })
