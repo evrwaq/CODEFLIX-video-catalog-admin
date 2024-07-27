@@ -85,4 +85,13 @@ describe('Category Unit Tests', () => {
     category.changeName('Movie changed');
     expect(category.name).toBe('Movie changed');
   })
+
+  test('Should change description', () => {
+    const category = new Category({
+      name: 'Movie',
+      description: 'Movie description'
+    });
+    category.changeDescription('Movie description changed');
+    expect(category.description).toBe('Movie description changed');
+  })
 })
