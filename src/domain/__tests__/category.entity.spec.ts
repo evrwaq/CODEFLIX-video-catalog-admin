@@ -27,5 +27,17 @@ describe('Category Unit Tests', () => {
       expect(category.is_active).toBeFalsy();
       expect(category.created_at).toBe(created_at);
     })
+
+    test('Should create a category with name and description', () => {
+      const category = new Category({
+        name: 'Movie',
+        description: 'Movie description'
+      });
+      expect(category.category_id).toBeUndefined();
+      expect(category.name).toBe('Movie');
+      expect(category.description).toBe('Movie description');
+      expect(category.is_active).toBeTruthy();
+      expect(category.created_at).toBeInstanceOf(Date);
+    })
   })
 })
