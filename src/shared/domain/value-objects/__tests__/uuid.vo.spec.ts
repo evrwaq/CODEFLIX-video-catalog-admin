@@ -1,10 +1,17 @@
 import { InvalidUuidError, Uuid } from "../uuid.vo"
+import { validate as uuidValidate } from "uuid";
 
 describe('Uuid Unit Tests', () => {
   test('Should throw error when uuid is invalid', () => {
     expect(() => {
       new Uuid('invalid-uuid');
     }).toThrowError(new InvalidUuidError())
+  })
+
+  test('Should create a valid uuid', () => {
+    const uuid = new Uuid();
+    expect(uuid.id).toBeDefined();
+    expect(uuidValidate(uuid.id)).toBe(true);
   })
   
   test('Should accept a valid uuid', () => {
