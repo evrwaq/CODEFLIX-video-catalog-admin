@@ -180,5 +180,13 @@ describe('Category Validator', () => {
         description: ['description must be a string'],
       })
     })
+
+    test('should contain errors messages when category is_active is invalid', () => {
+      expect(() =>
+        Category.create({ is_active: 5 } as any)
+      ).containsErrorMessages({
+        is_active: ['is_active must be a boolean value'],
+      })
+    })
   })
 })
