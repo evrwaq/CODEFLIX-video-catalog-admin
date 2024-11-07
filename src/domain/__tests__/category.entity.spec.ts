@@ -143,3 +143,34 @@ describe('Category Unit Tests', () => {
     expect(category.is_active).toBe(false)
   })
 })
+
+describe('Category Validator', () => {
+  describe('create command', () => {
+    test('should contain errors messages when category name is invalid', () => {
+      expect(() => Category.create({ name: null })).containsErrorMessages({
+        name: [
+          'name should not be empty',
+          'name must be a string',
+          'name must be shorter than or equal to 255 characters',
+        ],
+      })
+
+      expect(() => Category.create({ name: '' })).containsErrorMessages({
+        name: ['name should not be empty'],
+      })
+
+      expect(() => Category.create({ name: 5 as any })).containsErrorMessages({
+        name: [
+          'name must be a string',
+          'name must be shorter than or equal to 255 characters',
+        ],
+      })
+
+      expect(() =>
+        Category.create({ name: 't'.repeat(256) })
+      ).containsErrorMessages({
+        name: ['name must be shorter than or equal to 255 characters'],
+      })
+    })
+  })
+})
