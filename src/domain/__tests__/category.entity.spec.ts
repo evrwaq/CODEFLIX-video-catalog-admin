@@ -172,5 +172,13 @@ describe('Category Validator', () => {
         name: ['name must be shorter than or equal to 255 characters'],
       })
     })
+
+    test('should contain errors messages when category description is invalid', () => {
+      expect(() =>
+        Category.create({ description: 5 } as any)
+      ).containsErrorMessages({
+        description: ['description must be a string'],
+      })
+    })
   })
 })
