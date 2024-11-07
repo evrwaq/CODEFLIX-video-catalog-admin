@@ -218,4 +218,14 @@ describe('Category Validator', () => {
       })
     })
   })
+
+  describe('changeDescription method', () => {
+    test('should contain errors messages when category description is invalid', () => {
+      const category = Category.create({ name: 'Movie' })
+
+      expect(() => category.changeDescription(5 as any)).containsErrorMessages({
+        description: ['description must be a string'],
+      })
+    })
+  })
 })
