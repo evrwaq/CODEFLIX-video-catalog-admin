@@ -125,4 +125,17 @@ describe('InMemoryRepository Unit Tests', () => {
       new NotFoundError(uuid.id, StubEntity)
     )
   })
+
+  test('Should delete an entity', async () => {
+    const entity = new StubEntity({
+      entity_id: new Uuid(),
+      name: 'Test',
+      price: 100,
+    })
+    await repository.insert(entity)
+
+    await repository.delete(entity.entity_id)
+
+    expect(repository.items).toHaveLength(0)
+  })
 })
