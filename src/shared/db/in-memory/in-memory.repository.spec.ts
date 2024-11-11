@@ -1,4 +1,5 @@
 import { Entity } from '../../domain/entity'
+import { NotFoundError } from '../../domain/errors/not-found.error'
 import { ValueObject } from '../../domain/value-object'
 import { Uuid } from '../../domain/value-objects/uuid.vo'
 import { InMemoryRepository } from './in-memory.repository'
@@ -70,5 +71,30 @@ describe('InMemoryRepository Unit Tests', () => {
     expect(repository.items.length).toBe(2)
     expect(repository.items[0]).toBe(entities[0])
     expect(repository.items[1]).toBe(entities[1])
+  })
+
+  test('Should return all entities', async () => {
+    const entity = new StubEntity({
+      entity_id: new Uuid(),
+      name: 'Test',
+      price: 100,
+    })
+    await repository.insert(entity)
+
+    const entities = await repository.findAll()
+
+    expect(entities).toEqual([entity])
+  })
+
+  test('Should throws error on update when entity not found', async () => {
+    const entity = new StubEntity({
+      entity_id: new Uuid(),
+      name: 'Test',
+      price: 100,
+    })
+
+    expect(repository.update(entity)).rejects.toThrow(
+      new NotFoundError(entity.entity_id, StubEntity)
+    )
   })
 })
