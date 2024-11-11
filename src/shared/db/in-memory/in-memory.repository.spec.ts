@@ -118,4 +118,11 @@ describe('InMemoryRepository Unit Tests', () => {
 
     expect(entityUpdated.toJSON()).toEqual(repository.items[0].toJSON())
   })
+
+  test('Should throws error on delete when entity not found', async () => {
+    const uuid = new Uuid()
+    await expect(repository.delete(uuid)).rejects.toThrow(
+      new NotFoundError(uuid.id, StubEntity)
+    )
+  })
 })
