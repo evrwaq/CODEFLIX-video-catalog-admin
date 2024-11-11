@@ -1,6 +1,6 @@
-import { Entity } from '../shared/domain/entity'
-import { ValueObject } from '../shared/domain/value-object'
-import { Uuid } from '../shared/domain/value-objects/uuid.vo'
+import { Entity } from '../../shared/domain/entity'
+import { ValueObject } from '../../shared/domain/value-object'
+import { Uuid } from '../../shared/domain/value-objects/uuid.vo'
 import { CategoryValidatorFactory } from './category.validator'
 import { EntityValidationError } from './validators/validation.error'
 
