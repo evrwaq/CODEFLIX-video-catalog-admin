@@ -50,4 +50,25 @@ describe('InMemoryRepository Unit Tests', () => {
     expect(repository.items.length).toBe(1)
     expect(repository.items[0]).toBe(entity)
   })
+
+  test('Should bulk insert entities', async () => {
+    const entities = [
+      new StubEntity({
+        entity_id: new Uuid(),
+        name: 'Test',
+        price: 100,
+      }),
+      new StubEntity({
+        entity_id: new Uuid(),
+        name: 'Test',
+        price: 100,
+      }),
+    ]
+
+    await repository.bulkInsert(entities)
+
+    expect(repository.items.length).toBe(2)
+    expect(repository.items[0]).toBe(entities[0])
+    expect(repository.items[1]).toBe(entities[1])
+  })
 })
