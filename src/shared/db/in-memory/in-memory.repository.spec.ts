@@ -1,6 +1,5 @@
 import { Entity } from '../../domain/entity'
 import { NotFoundError } from '../../domain/errors/not-found.error'
-import { ValueObject } from '../../domain/value-object'
 import { Uuid } from '../../domain/value-objects/uuid.vo'
 import { InMemoryRepository } from './in-memory.repository'
 
@@ -22,7 +21,11 @@ class StubEntity extends Entity {
   }
 
   toJSON() {
-    throw new Error('Method not implemented.')
+    return {
+      entity_id: this.entity_id.id,
+      name: this.name,
+      price: this.price,
+    }
   }
 }
 
@@ -96,5 +99,23 @@ describe('InMemoryRepository Unit Tests', () => {
     expect(repository.update(entity)).rejects.toThrow(
       new NotFoundError(entity.entity_id, StubEntity)
     )
+  })
+
+  test('Should updates an entity', async () => {
+    const entity = new StubEntity({
+      entity_id: new Uuid(),
+      name: 'Test',
+      price: 100,
+    })
+    await repository.insert(entity)
+
+    const entityUpdated = new StubEntity({
+      entity_id: entity.entity_id,
+      name: 'Updated',
+      price: 1,
+    })
+    await repository.update(entityUpdated)
+
+    expect(entityUpdated.toJSON()).toEqual(repository.items[0].toJSON())
   })
 })
