@@ -77,4 +77,37 @@ describe('SearchParams Unit Tests', () => {
       )
     })
   })
+
+  test('sort_dir prop', () => {
+    let params = new SearchParams()
+    expect(params.sort_dir).toBeNull()
+
+    params = new SearchParams({ sort: null })
+    expect(params.sort_dir).toBeNull()
+
+    params = new SearchParams({ sort: undefined })
+    expect(params.sort_dir).toBeNull()
+
+    params = new SearchParams({ sort: '' })
+    expect(params.sort_dir).toBeNull()
+
+    const arrange = [
+      { sort_dir: null, expected: 'asc' },
+      { sort_dir: undefined, expected: 'asc' },
+      { sort_dir: '', expected: 'asc' },
+      { sort_dir: 0, expected: 'asc' },
+      { sort_dir: 'fake', expected: 'asc' },
+      { sort_dir: 'asc', expected: 'asc' },
+      { sort_dir: 'ASC', expected: 'asc' },
+      { sort_dir: 'desc', expected: 'desc' },
+      { sort_dir: 'DESC', expected: 'desc' },
+    ]
+
+    arrange.forEach((index) => {
+      expect(
+        new SearchParams({ sort: 'field', sort_dir: index.sort_dir as any })
+          .sort_dir
+      ).toBe(index.expected)
+    })
+  })
 })
