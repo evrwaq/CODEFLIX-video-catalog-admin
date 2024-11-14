@@ -1,3 +1,4 @@
+import { filter } from 'lodash'
 import { SearchParams } from '../search-params'
 
 describe('SearchParams Unit Tests', () => {
@@ -108,6 +109,30 @@ describe('SearchParams Unit Tests', () => {
         new SearchParams({ sort: 'field', sort_dir: index.sort_dir as any })
           .sort_dir
       ).toBe(index.expected)
+    })
+  })
+
+  test('filter prop', () => {
+    const params = new SearchParams()
+    expect(params.filter).toBeNull()
+
+    const arrange = [
+      { filter: null, expected: null },
+      { filter: undefined, expected: null },
+      { filter: '', expected: null },
+      { filter: 0, expected: '0' },
+      { filter: -1, expected: '-1' },
+      { filter: 5.5, expected: '5.5' },
+      { filter: true, expected: 'true' },
+      { filter: false, expected: 'false' },
+      { filter: {}, expected: '[object Object]' },
+      { filter: 'field', expected: 'field' },
+    ]
+
+    arrange.forEach((index) => {
+      expect(new SearchParams({ filter: index.filter as any }).filter).toBe(
+        index.expected
+      )
     })
   })
 })
