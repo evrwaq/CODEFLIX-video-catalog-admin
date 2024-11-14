@@ -53,4 +53,28 @@ describe('SearchParams Unit Tests', () => {
       ).toBe(index.expected)
     })
   })
+
+  test('sort prop', () => {
+    const params = new SearchParams()
+    expect(params.sort).toBeNull()
+
+    const arrange = [
+      { sort: null, expected: null },
+      { sort: undefined, expected: null },
+      { sort: '', expected: null },
+      { sort: 0, expected: '0' },
+      { sort: -1, expected: '-1' },
+      { sort: 5.5, expected: '5.5' },
+      { sort: true, expected: 'true' },
+      { sort: false, expected: 'false' },
+      { sort: {}, expected: '[object Object]' },
+      { sort: 'field', expected: 'field' },
+    ]
+
+    arrange.forEach((index) => {
+      expect(new SearchParams({ sort: index.sort as any }).sort).toBe(
+        index.expected
+      )
+    })
+  })
 })
