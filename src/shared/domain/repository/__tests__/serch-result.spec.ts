@@ -28,4 +28,15 @@ describe('SearchResult Unit Tests', () => {
 
     expect(result.last_page).toBe(1)
   })
+
+  test('last_page prop when total is not a multiple of per_page', () => {
+    const result = new SearchResult({
+      items: [] as any,
+      total: 101,
+      current_page: 1,
+      per_page: 20,
+    })
+
+    expect(result.last_page).toBe(6)
+  })
 })
