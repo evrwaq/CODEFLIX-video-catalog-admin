@@ -71,5 +71,26 @@ describe('InMemorySearchableRepository Unit Tests', () => {
       expect(itemsFiltered).toEqual(items)
       expect(spyFilterMethod).not.toHaveBeenCalled()
     })
+
+    it('should filter using a filter param', async () => {
+      const items = [
+        new StubEntity({ name: 'test', price: 5 }),
+        new StubEntity({ name: 'TEST', price: 5 }),
+        new StubEntity({ name: 'fake', price: 0 }),
+      ]
+      const spyFilterMethod = jest.spyOn(items, 'filter')
+      let itemsFiltered = await repository['applyFilter'](items, 'TEST')
+
+      expect(itemsFiltered).toEqual([items[0], items[1]])
+      expect(spyFilterMethod).toHaveBeenCalledTimes(1)
+
+      itemsFiltered = await repository['applyFilter'](items, '5')
+      expect(itemsFiltered).toEqual([items[0], items[1]])
+      expect(spyFilterMethod).toHaveBeenCalledTimes(2)
+
+      itemsFiltered = await repository['applyFilter'](items, 'no-filter')
+      expect(itemsFiltered).toHaveLength(0)
+      expect(spyFilterMethod).toHaveBeenCalledTimes(3)
+    })
   })
 })
