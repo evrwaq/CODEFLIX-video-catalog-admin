@@ -72,7 +72,7 @@ describe('InMemorySearchableRepository Unit Tests', () => {
       expect(spyFilterMethod).not.toHaveBeenCalled()
     })
 
-    it('should filter using a filter param', async () => {
+    it('should filter when using a filter param', async () => {
       const items = [
         new StubEntity({ name: 'test', price: 5 }),
         new StubEntity({ name: 'TEST', price: 5 }),
@@ -106,6 +106,20 @@ describe('InMemorySearchableRepository Unit Tests', () => {
 
       itemsSorted = repository['applySort'](items, 'price', 'asc')
       expect(itemsSorted).toEqual(items)
+    })
+
+    it('should sort items when using a sort param', async () => {
+      const items = [
+        new StubEntity({ name: 'b', price: 5 }),
+        new StubEntity({ name: 'a', price: 5 }),
+        new StubEntity({ name: 'c', price: 5 }),
+      ]
+
+      let itemsSorted = repository['applySort'](items, 'name', 'asc')
+      expect(itemsSorted).toEqual([items[1], items[0], items[2]])
+
+      itemsSorted = repository['applySort'](items, 'name', 'desc')
+      expect(itemsSorted).toEqual([items[2], items[0], items[1]])
     })
   })
 })
