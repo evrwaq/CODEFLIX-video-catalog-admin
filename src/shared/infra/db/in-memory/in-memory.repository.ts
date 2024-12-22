@@ -109,7 +109,7 @@ export abstract class InMemorySearchableRepository<
     sort_dir: SortDirection | null,
     custom_getter?: (sort: string, item: E) => any
   ) {
-    if (!sort || this.sortableFields.includes(sort)) {
+    if (!sort || !this.sortableFields.includes(sort)) {
       return items
     }
 
