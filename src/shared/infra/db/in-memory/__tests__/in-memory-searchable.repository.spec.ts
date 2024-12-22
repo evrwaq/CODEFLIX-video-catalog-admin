@@ -93,4 +93,19 @@ describe('InMemorySearchableRepository Unit Tests', () => {
       expect(spyFilterMethod).toHaveBeenCalledTimes(3)
     })
   })
+
+  describe('applySort method', () => {
+    it('should not sort items when sort param is null', async () => {
+      const items = [
+        new StubEntity({ name: 'b', price: 5 }),
+        new StubEntity({ name: 'a', price: 5 }),
+      ]
+
+      let itemsSorted = repository['applySort'](items, null, null)
+      expect(itemsSorted).toEqual(items)
+
+      itemsSorted = repository['applySort'](items, 'price', 'asc')
+      expect(itemsSorted).toEqual(items)
+    })
+  })
 })
