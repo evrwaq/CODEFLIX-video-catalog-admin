@@ -1,4 +1,6 @@
 import { Entity } from '../../../../domain/entity'
+import { SearchParams } from '../../../../domain/repository/search-params'
+import { SearchResult } from '../../../../domain/repository/search-result'
 import { Uuid } from '../../../../domain/value-objects/uuid.vo'
 import { InMemorySearchableRepository } from '../in-memory.repository'
 
@@ -144,6 +146,24 @@ describe('InMemorySearchableRepository Unit Tests', () => {
 
       itemsPaginated = repository['applyPagination'](items, 4, 2)
       expect(itemsPaginated).toEqual([])
+    })
+  })
+
+  describe('search method', () => {
+    it('should apply only pagination when other params are null', async () => {
+      const entity = new StubEntity({ name: 'a', price: 5 })
+      const items = Array(16).fill(entity)
+      repository.items = items
+
+      const result = await repository.search(new SearchParams())
+      expect(result).toEqual(
+        new SearchResult({
+          items: Array(15).fill(entity),
+          total: 16,
+          current_page: 1,
+          per_page: 15,
+        })
+      )
     })
   })
 })
