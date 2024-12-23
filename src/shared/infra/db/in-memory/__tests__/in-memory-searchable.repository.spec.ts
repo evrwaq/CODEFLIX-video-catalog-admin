@@ -165,5 +165,39 @@ describe('InMemorySearchableRepository Unit Tests', () => {
         })
       )
     })
+
+    it('should apply pagination and filter', async () => {
+      const items = [
+        new StubEntity({ name: 'test', price: 5 }),
+        new StubEntity({ name: 'a', price: 5 }),
+        new StubEntity({ name: 'TEST', price: 5 }),
+        new StubEntity({ name: 'TeSt', price: 5 }),
+      ]
+      repository.items = items
+
+      let result = await repository.search(
+        new SearchParams({ page: 1, per_page: 2, filter: 'TEST' })
+      )
+      expect(result).toEqual(
+        new SearchResult({
+          items: [items[0], items[2]],
+          total: 3,
+          current_page: 1,
+          per_page: 2,
+        })
+      )
+
+      result = await repository.search(
+        new SearchParams({ page: 2, per_page: 2, filter: 'TEST' })
+      )
+      expect(result).toEqual(
+        new SearchResult({
+          items: [items[3]],
+          total: 3,
+          current_page: 2,
+          per_page: 2,
+        })
+      )
+    })
   })
 })
