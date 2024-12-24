@@ -49,9 +49,17 @@ describe('CategoryFakerBuilder Unit Tests', () => {
 
   describe('name prop', () => {
     const faker = CategoryFakeBuilder.category()
-
     test('should be a function', () => {
       expect(typeof faker['_name']).toBe('function')
+    })
+
+    test('should call the word method', () => {
+      const chance = Chance()
+      const spyWordMethod = jest.spyOn(chance, 'word')
+      faker['chance'] = chance
+      faker.build()
+
+      expect(spyWordMethod).toHaveBeenCalled()
     })
   })
 })
