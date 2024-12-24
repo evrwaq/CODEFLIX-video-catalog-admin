@@ -138,4 +138,11 @@ describe('CategoryFakerBuilder Unit Tests', () => {
       expect(categories[1].description).toBe(`test description 1`)
     })
   })
+
+  describe('is_active prop', () => {
+    const faker = CategoryFakeBuilder.category()
+    test('should be a function', () => {
+      expect(typeof faker['_is_active']).toBe('function')
+    })
+  })
 })
