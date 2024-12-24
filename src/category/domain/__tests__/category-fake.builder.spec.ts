@@ -173,5 +173,17 @@ describe('CategoryFakerBuilder Unit Tests', () => {
     test('should be undefined', () => {
       expect(faker['_created_at']).toBeUndefined()
     })
+
+    test('withCreatedAt', () => {
+      const date = new Date()
+      const $this = faker.withCreatedAt(date)
+      expect($this).toBeInstanceOf(CategoryFakeBuilder)
+      expect(faker['_created_at']).toBe(date)
+
+      faker.withCreatedAt(() => date)
+      //@ts-expect-error _created_at is a callable
+      expect(faker['_created_at']()).toBe(date)
+      expect(faker.created_at).toBe(date)
+    })
   })
 })
