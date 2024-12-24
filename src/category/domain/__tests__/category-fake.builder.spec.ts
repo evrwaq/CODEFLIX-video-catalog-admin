@@ -46,4 +46,12 @@ describe('CategoryFakerBuilder Unit Tests', () => {
       expect(fakerMany.build()[1].category_id).toBe(categoryId)
     })
   })
+
+  describe('name prop', () => {
+    const faker = CategoryFakeBuilder.category()
+
+    test('should be a function', () => {
+      expect(typeof faker['_name']).toBe('function')
+    })
+  })
 })
