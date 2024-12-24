@@ -144,5 +144,12 @@ describe('CategoryFakerBuilder Unit Tests', () => {
     test('should be a function', () => {
       expect(typeof faker['_is_active']).toBe('function')
     })
+
+    test('activate', () => {
+      const $this = faker.activate()
+      expect($this).toBeInstanceOf(CategoryFakeBuilder)
+      expect(faker['_is_active']).toBe(true)
+      expect(faker.is_active).toBe(true)
+    })
   })
 })
