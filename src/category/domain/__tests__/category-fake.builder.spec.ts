@@ -200,4 +200,31 @@ describe('CategoryFakerBuilder Unit Tests', () => {
       expect(categories[1].created_at.getTime()).toBe(date.getTime() + 3)
     })
   })
+
+  test('should create a category', () => {
+    const faker = CategoryFakeBuilder.category()
+    let category = faker.build()
+
+    expect(category.category_id).toBeInstanceOf(Uuid)
+    expect(typeof category.name === 'string').toBeTruthy()
+    expect(typeof category.description === 'string').toBeTruthy()
+    expect(category.is_active).toBe(true)
+    expect(category.created_at).toBeInstanceOf(Date)
+
+    const created_at = new Date()
+    const category_id = new Uuid()
+    category = faker
+      .withCategoryId(category_id)
+      .withName('name test')
+      .withDescription('description test')
+      .deactivate()
+      .withCreatedAt(created_at)
+      .build()
+
+    expect(category.category_id.id).toBe(category_id.id)
+    expect(category.name).toBe('name test')
+    expect(category.description).toBe('description test')
+    expect(category.is_active).toBe(false)
+    expect(category.created_at).toBe(created_at)
+  })
 })
