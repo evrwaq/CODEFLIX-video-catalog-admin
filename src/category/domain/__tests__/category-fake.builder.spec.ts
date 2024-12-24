@@ -49,6 +49,7 @@ describe('CategoryFakerBuilder Unit Tests', () => {
 
   describe('name prop', () => {
     const faker = CategoryFakeBuilder.category()
+
     test('should be a function', () => {
       expect(typeof faker['_name']).toBe('function')
     })
@@ -101,6 +102,7 @@ describe('CategoryFakerBuilder Unit Tests', () => {
 
   describe('description prop', () => {
     const faker = CategoryFakeBuilder.category()
+
     test('should be a function', () => {
       expect(typeof faker['_description']).toBe('function')
     })
@@ -141,6 +143,7 @@ describe('CategoryFakerBuilder Unit Tests', () => {
 
   describe('is_active prop', () => {
     const faker = CategoryFakeBuilder.category()
+
     test('should be a function', () => {
       expect(typeof faker['_is_active']).toBe('function')
     })
