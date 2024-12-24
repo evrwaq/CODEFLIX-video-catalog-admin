@@ -159,4 +159,15 @@ describe('CategoryFakerBuilder Unit Tests', () => {
       expect(faker.is_active).toBe(false)
     })
   })
+
+  describe('created_at prop', () => {
+    const faker = CategoryFakeBuilder.category()
+
+    test('should throw error when any with methods has called', () => {
+      const fakerCategory = CategoryFakeBuilder.category()
+      expect(() => fakerCategory.created_at).toThrowError(
+        new Error("Property created_at not have a factory, use 'with' methods")
+      )
+    })
+  })
 })
