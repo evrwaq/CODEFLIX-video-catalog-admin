@@ -28,5 +28,22 @@ describe('CategoryFakerBuilder Unit Tests', () => {
 
       expect(faker.category_id).toBe(category_id)
     })
+
+    test('should pass index to category_id factory', () => {
+      let mockFactory = jest.fn(() => new Uuid())
+      faker.withCategoryId(mockFactory)
+      faker.build()
+      expect(mockFactory).toHaveBeenCalledTimes(1)
+
+      const categoryId = new Uuid()
+      mockFactory = jest.fn(() => categoryId)
+      const fakerMany = CategoryFakeBuilder.categories(2)
+      fakerMany.withCategoryId(mockFactory)
+      fakerMany.build()
+
+      expect(mockFactory).toHaveBeenCalledTimes(2)
+      expect(fakerMany.build()[0].category_id).toBe(categoryId)
+      expect(fakerMany.build()[1].category_id).toBe(categoryId)
+    })
   })
 })
