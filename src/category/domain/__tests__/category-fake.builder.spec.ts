@@ -169,5 +169,9 @@ describe('CategoryFakerBuilder Unit Tests', () => {
         new Error("Property created_at not have a factory, use 'with' methods")
       )
     })
+
+    test('should be undefined', () => {
+      expect(faker['_created_at']).toBeUndefined()
+    })
   })
 })
