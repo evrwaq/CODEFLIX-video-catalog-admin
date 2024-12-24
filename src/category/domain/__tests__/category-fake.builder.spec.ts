@@ -61,5 +61,17 @@ describe('CategoryFakerBuilder Unit Tests', () => {
 
       expect(spyWordMethod).toHaveBeenCalled()
     })
+
+    test('withName', () => {
+      const $this = faker.withName('test name')
+      expect($this).toBeInstanceOf(CategoryFakeBuilder)
+      expect(faker['_name']).toBe('test name')
+
+      faker.withName(() => 'test name')
+      //@ts-expect-error name is callable
+      expect(faker['_name']()).toBe('test name')
+
+      expect(faker.name).toBe('test name')
+    })
   })
 })
