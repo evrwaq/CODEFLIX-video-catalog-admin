@@ -98,4 +98,11 @@ describe('CategoryFakerBuilder Unit Tests', () => {
       expect(faker['_name']).toBe(tooLong)
     })
   })
+
+  describe('description prop', () => {
+    const faker = CategoryFakeBuilder.category()
+    test('should be a function', () => {
+      expect(typeof faker['_description']).toBe('function')
+    })
+  })
 })
