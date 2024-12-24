@@ -50,4 +50,18 @@ describe('CategoryInMemoryRepository', () => {
 
     expect(itemsSorted).toEqual([items[2], items[1], items[0]])
   })
+
+  it('should sort by name', async () => {
+    const items = [
+      Category.create({ name: 'c' }),
+      Category.create({ name: 'b' }),
+      Category.create({ name: 'a' }),
+    ]
+
+    let itemsSorted = repository['applySort'](items, 'name', 'asc')
+    expect(itemsSorted).toEqual([items[2], items[1], items[0]])
+
+    itemsSorted = repository['applySort'](items, 'name', 'desc')
+    expect(itemsSorted).toEqual([items[0], items[1], items[2]])
+  })
 })
