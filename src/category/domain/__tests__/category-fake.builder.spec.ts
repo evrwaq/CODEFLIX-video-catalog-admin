@@ -112,5 +112,17 @@ describe('CategoryFakerBuilder Unit Tests', () => {
       faker.build()
       expect(spyParagraphMethod).toHaveBeenCalled()
     })
+
+    test('withDescription', () => {
+      const $this = faker.withDescription('test description')
+      expect($this).toBeInstanceOf(CategoryFakeBuilder)
+      expect(faker['_description']).toBe('test description')
+
+      faker.withDescription(() => 'test description')
+      //@ts-expect-error description is callable
+      expect(faker['_description']()).toBe('test description')
+
+      expect(faker.description).toBe('test description')
+    })
   })
 })
