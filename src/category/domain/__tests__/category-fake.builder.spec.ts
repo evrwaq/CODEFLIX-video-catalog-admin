@@ -15,5 +15,18 @@ describe('CategoryFakerBuilder Unit Tests', () => {
     test('should be undefined', () => {
       expect(faker['_category_id']).toBeUndefined()
     })
+
+    test('withCategoryId', () => {
+      const category_id = new Uuid()
+      const $this = faker.withCategoryId(category_id)
+      expect($this).toBeInstanceOf(CategoryFakeBuilder)
+      expect(faker['_category_id']).toBe(category_id)
+
+      faker.withCategoryId(() => category_id)
+      //@ts-expect-error _category_id is a callable
+      expect(faker['_category_id']()).toBe(category_id)
+
+      expect(faker.category_id).toBe(category_id)
+    })
   })
 })
