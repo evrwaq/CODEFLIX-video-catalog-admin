@@ -124,5 +124,18 @@ describe('CategoryFakerBuilder Unit Tests', () => {
 
       expect(faker.description).toBe('test description')
     })
+
+    test('should pass index to description factory', () => {
+      faker.withDescription((index) => `test description ${index}`)
+      const category = faker.build()
+      expect(category.description).toBe(`test description 0`)
+
+      const fakerMany = CategoryFakeBuilder.categories(2)
+      fakerMany.withDescription((index) => `test description ${index}`)
+      const categories = fakerMany.build()
+
+      expect(categories[0].description).toBe(`test description 0`)
+      expect(categories[1].description).toBe(`test description 1`)
+    })
   })
 })
