@@ -227,4 +227,35 @@ describe('CategoryFakerBuilder Unit Tests', () => {
     expect(category.is_active).toBe(false)
     expect(category.created_at).toBe(created_at)
   })
+
+  test('should create many categories', () => {
+    const faker = CategoryFakeBuilder.categories(2)
+    let categories = faker.build()
+
+    categories.forEach((category) => {
+      expect(category.category_id).toBeInstanceOf(Uuid)
+      expect(typeof category.name === 'string').toBeTruthy()
+      expect(typeof category.description === 'string').toBeTruthy()
+      expect(category.is_active).toBe(true)
+      expect(category.created_at).toBeInstanceOf(Date)
+    })
+
+    const created_at = new Date()
+    const category_id = new Uuid()
+    categories = faker
+      .withCategoryId(category_id)
+      .withName('name test')
+      .withDescription('description test')
+      .deactivate()
+      .withCreatedAt(created_at)
+      .build()
+
+    categories.forEach((category) => {
+      expect(category.category_id.id).toBe(category_id.id)
+      expect(category.name).toBe('name test')
+      expect(category.description).toBe('description test')
+      expect(category.is_active).toBe(false)
+      expect(category.created_at).toBe(created_at)
+    })
+  })
 })
