@@ -9,7 +9,7 @@ describe('CategoryInMemoryRepository', () => {
   })
 
   it('should not filter items when filter is null', async () => {
-    const items = [Category.create({ name: 'test' })]
+    const items = [Category.fake().category().build()]
     const filterSpy = jest.spyOn(items, 'filter')
 
     const itemsFiltered = await repository['applyFilter'](items, null)
@@ -20,9 +20,9 @@ describe('CategoryInMemoryRepository', () => {
 
   it('should filter items when using filter parameter', async () => {
     const items = [
-      new Category({ name: 'test' }),
-      new Category({ name: 'TEST' }),
-      new Category({ name: 'fake' }),
+      Category.fake().category().withName('test').build(),
+      Category.fake().category().withName('TEST').build(),
+      Category.fake().category().withName('fake').build(),
     ]
     const filterSpy = jest.spyOn(items, 'filter')
 
@@ -35,15 +35,21 @@ describe('CategoryInMemoryRepository', () => {
   it('should sort by created_at when sort param is null', async () => {
     const created_at = new Date()
     const items = [
-      new Category({ name: 'test', created_at }),
-      new Category({
-        name: 'TEST',
-        created_at: new Date(created_at.getTime() + 100),
-      }),
-      new Category({
-        name: 'fake',
-        created_at: new Date(created_at.getTime() + 200),
-      }),
+      Category.fake()
+        .category()
+        .withName('test')
+        .withCreatedAt(created_at)
+        .build(),
+      Category.fake()
+        .category()
+        .withName('TEST')
+        .withCreatedAt(new Date(created_at.getTime() + 100))
+        .build(),
+      Category.fake()
+        .category()
+        .withName('fake')
+        .withCreatedAt(new Date(created_at.getTime() + 200))
+        .build(),
     ]
 
     const itemsSorted = repository['applySort'](items, null, null)
@@ -53,9 +59,9 @@ describe('CategoryInMemoryRepository', () => {
 
   it('should sort by name', async () => {
     const items = [
-      Category.create({ name: 'c' }),
-      Category.create({ name: 'b' }),
-      Category.create({ name: 'a' }),
+      Category.fake().category().withName('c').build(),
+      Category.fake().category().withName('b').build(),
+      Category.fake().category().withName('a').build(),
     ]
 
     let itemsSorted = repository['applySort'](items, 'name', 'asc')
