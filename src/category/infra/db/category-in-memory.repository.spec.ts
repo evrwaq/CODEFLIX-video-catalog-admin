@@ -17,4 +17,18 @@ describe('CategoryInMemoryRepository', () => {
     expect(filterSpy).not.toHaveBeenCalled()
     expect(itemsFiltered).toEqual(items)
   })
+
+  it('should filter items when using filter parameter', async () => {
+    const items = [
+      new Category({ name: 'test' }),
+      new Category({ name: 'TEST' }),
+      new Category({ name: 'fake' }),
+    ]
+    const filterSpy = jest.spyOn(items, 'filter')
+
+    const itemsFiltered = await repository['applyFilter'](items, 'TEST')
+
+    expect(filterSpy).toHaveBeenCalledTimes(1)
+    expect(itemsFiltered).toEqual([items[0], items[1]])
+  })
 })
