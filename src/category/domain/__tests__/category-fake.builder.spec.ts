@@ -86,5 +86,16 @@ describe('CategoryFakerBuilder Unit Tests', () => {
       expect(categories[0].name).toBe(`test name 0`)
       expect(categories[1].name).toBe(`test name 1`)
     })
+
+    test('invalid too long case', () => {
+      const $this = faker.withInvalidNameTooLong()
+      expect($this).toBeInstanceOf(CategoryFakeBuilder)
+      expect(faker['_name'].length).toBe(256)
+
+      const tooLong = 'a'.repeat(256)
+      faker.withInvalidNameTooLong(tooLong)
+      expect(faker['_name'].length).toBe(256)
+      expect(faker['_name']).toBe(tooLong)
+    })
   })
 })
