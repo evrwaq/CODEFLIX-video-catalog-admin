@@ -9,6 +9,7 @@ describe('CategoryModel Integration Tests', () => {
       dialect: 'sqlite',
       storage: ':memory',
       models: [CategoryModel],
+      logging: false,
     })
     await sequelize.sync({ force: true })
   })
