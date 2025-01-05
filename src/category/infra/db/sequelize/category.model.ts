@@ -1,5 +1,12 @@
-import { Column, DataType, Model, PrimaryKey } from 'sequelize-typescript'
+import {
+  Column,
+  DataType,
+  Model,
+  PrimaryKey,
+  Table,
+} from 'sequelize-typescript'
 
+@Table({ tableName: 'categories', timestamps: false })
 export class CategoryModel extends Model {
   @PrimaryKey
   @Column({ type: DataType.UUID })
