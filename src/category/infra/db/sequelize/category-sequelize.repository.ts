@@ -70,7 +70,7 @@ export class CategorySequelizeRepository implements ICategoryRepository {
 
   private formatSort(sort: string, sort_dir: SortDirection) {}
 
-  getEntity(): new (...args: any[]) => Category {
-    throw new Error('Method not implemented.')
+  public getEntity(): new (...args: any[]) => Category {
+    return Category
   }
 }
