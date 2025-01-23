@@ -19,7 +19,15 @@ export class CategorySequelizeRepository implements ICategoryRepository {
   }
 
   async bulkInsert(entities: Category[]): Promise<void> {
-    throw new Error('Method not implemented.')
+    await this.categoryModel.bulkCreate(
+      entities.map((entity) => ({
+        category_id: entity.category_id.id,
+        name: entity.name,
+        description: entity.description,
+        is_active: entity.is_active,
+        created_at: entity.created_at,
+      }))
+    )
   }
 
   async update(entity: Category): Promise<void> {
