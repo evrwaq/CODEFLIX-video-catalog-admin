@@ -51,7 +51,17 @@ export class CategorySequelizeRepository implements ICategoryRepository {
   }
 
   async findAll(): Promise<Category[]> {
-    throw new Error('Method not implemented.')
+    const models = await this.categoryModel.findAll()
+    const categories = models.map((model) => {
+      return new Category({
+        category_id: new Uuid(model.category_id),
+        name: model.name,
+        description: model.description,
+        is_active: model.is_active,
+        created_at: model.created_at,
+      })
+    })
+    return categories
   }
 
   async search(props: CategorySearchParams): Promise<CategorySearchResult> {
