@@ -1,3 +1,7 @@
+import { Entity } from '../../../../shared/domain/entity'
+import { NotFoundError } from '../../../../shared/domain/errors/not-found.error'
+import { SearchParams } from '../../../../shared/domain/repository/search-params'
+import { SearchResult } from '../../../../shared/domain/repository/search-result'
 import { Uuid } from '../../../../shared/domain/value-objects/uuid.vo'
 import { Category } from '../../../domain/category.entity'
 import { ICategoryRepository } from '../../../domain/category.repository'
@@ -31,7 +35,21 @@ export class CategorySequelizeRepository implements ICategoryRepository {
   }
 
   async update(entity: Category): Promise<void> {
-    throw new Error('Method not implemented.')
+    const id = entity.category_id.id
+    const model = await this._get(id)
+    if (!model) {
+      throw new NotFoundError(id, this.getEntity())
+    }
+    await this.categoryModel.update(
+      {
+        category_id: id,
+        name: entity.name,
+        description: entity.description,
+        is_active: entity.is_active,
+        created_at: entity.created_at,
+      },
+      { where: { category_id: id } }
+    )
   }
 
   async delete(category_id: Uuid): Promise<void> {
@@ -39,7 +57,7 @@ export class CategorySequelizeRepository implements ICategoryRepository {
   }
 
   async findById(entity_id: Uuid): Promise<Category | null> {
-    const model = await this.categoryModel.findByPk(entity_id.id)
+    const model = await this._get(entity_id.id)
     const category = new Category({
       category_id: new Uuid(model.category_id),
       name: model.name,
@@ -48,6 +66,11 @@ export class CategorySequelizeRepository implements ICategoryRepository {
       created_at: model.created_at,
     })
     return category
+  }
+
+  private async _get(id: string) {
+    const model = await this.categoryModel.findByPk(id)
+    return model
   }
 
   async findAll(): Promise<Category[]> {
@@ -64,11 +87,9 @@ export class CategorySequelizeRepository implements ICategoryRepository {
     return categories
   }
 
-  async search(props: CategorySearchParams): Promise<CategorySearchResult> {
+  async search(props: SearchParams<string>): Promise<SearchResult<Entity>> {
     throw new Error('Method not implemented.')
   }
-
-  private formatSort(sort: string, sort_dir: SortDirection) {}
 
   public getEntity(): new (...args: any[]) => Category {
     return Category
