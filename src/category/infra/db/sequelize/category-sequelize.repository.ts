@@ -53,7 +53,12 @@ export class CategorySequelizeRepository implements ICategoryRepository {
   }
 
   async delete(category_id: Uuid): Promise<void> {
-    throw new Error('Method not implemented.')
+    const id = category_id.id
+    const model = await this._get(id)
+    if (!model) {
+      throw new NotFoundError(id, this.getEntity())
+    }
+    await this.categoryModel.destroy({ where: { category_id: id } })
   }
 
   async findById(entity_id: Uuid): Promise<Category | null> {
