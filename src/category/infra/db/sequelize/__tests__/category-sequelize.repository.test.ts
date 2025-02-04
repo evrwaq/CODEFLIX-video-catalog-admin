@@ -35,4 +35,12 @@ describe('CategorySequelizeRepository Integration Test', () => {
     categoryFound = await repository.findById(category.category_id)
     expect(category.toJSON()).toStrictEqual(categoryFound.toJSON())
   })
+
+  it('should return all categories', async () => {
+    const category = Category.fake().category().build()
+    await repository.insert(category)
+    const categories = await repository.findAll()
+    expect(categories).toHaveLength(1)
+    expect(JSON.stringify(categories)).toBe(JSON.stringify([category]))
+  })
 })
