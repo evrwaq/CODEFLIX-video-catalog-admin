@@ -59,4 +59,23 @@ describe('CategoryModelMapper Integration Tests', () => {
       }).toJSON()
     )
   })
+
+  it('should convert a category entity to a category model', () => {
+    const created_at = new Date()
+    const entity = new Category({
+      category_id: new Uuid('9b877e53-2b46-40d6-a7b5-b67feca2ec8f'),
+      name: 'some name',
+      description: 'some description',
+      is_active: true,
+      created_at,
+    })
+    const model = CategoryModelMapper.toModel(entity)
+    expect(model.toJSON()).toStrictEqual({
+      category_id: '9b877e53-2b46-40d6-a7b5-b67feca2ec8f',
+      name: 'some name',
+      description: 'some description',
+      is_active: true,
+      created_at,
+    })
+  })
 })
