@@ -69,4 +69,13 @@ describe('CategorySequelizeRepository Integration Test', () => {
       new NotFoundError(categoryId.id, Category)
     )
   })
+
+  it('should delete a entity', async () => {
+    const category = Category.fake().category().build()
+    await repository.insert(category)
+
+    await repository.delete(category.category_id)
+
+    await expect(repository.findById(category.category_id)).resolves.toBeNull()
+  })
 })
