@@ -3,6 +3,7 @@ import { CategoryModel } from '../category.model'
 import { Uuid } from '../../../../../shared/domain/value-objects/uuid.vo'
 import { CategoryModelMapper } from '../category-model-mapper'
 import { EntityValidationError } from '../../../../domain/validators/validation.error'
+import { Category } from '../../../../domain/category.entity'
 
 describe('CategoryModelMapper Integration Tests', () => {
   let sequelize
@@ -36,5 +37,26 @@ describe('CategoryModelMapper Integration Tests', () => {
         ],
       })
     }
+  })
+
+  it('should convert a category model to a category entity', () => {
+    const created_at = new Date()
+    const model = CategoryModel.build({
+      category_id: '9b877e53-2b46-40d6-a7b5-b67feca2ec8f',
+      name: 'some name',
+      description: 'some description',
+      is_active: true,
+      created_at,
+    })
+    const entity = CategoryModelMapper.toEntity(model)
+    expect(entity.toJSON()).toStrictEqual(
+      new Category({
+        category_id: new Uuid('9b877e53-2b46-40d6-a7b5-b67feca2ec8f'),
+        name: 'some name',
+        description: 'some description',
+        is_active: true,
+        created_at,
+      }).toJSON()
+    )
   })
 })
