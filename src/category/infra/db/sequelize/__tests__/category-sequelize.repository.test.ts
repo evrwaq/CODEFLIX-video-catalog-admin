@@ -3,6 +3,7 @@ import { CategoryModel } from '../category.model'
 import { CategorySequelizeRepository } from '../category-sequelize.repository'
 import { Category } from '../../../../domain/category.entity'
 import { Uuid } from '../../../../../shared/domain/value-objects/uuid.vo'
+import { NotFoundError } from '../../../../../shared/domain/errors/not-found.error'
 
 describe('CategorySequelizeRepository Integration Test', () => {
   let sequelize
@@ -42,6 +43,13 @@ describe('CategorySequelizeRepository Integration Test', () => {
     const categories = await repository.findAll()
     expect(categories).toHaveLength(1)
     expect(JSON.stringify(categories)).toBe(JSON.stringify([category]))
+  })
+
+  it('should throw error on update when a entity not found', async () => {
+    const category = Category.fake().category().build()
+    await expect(repository.update(category)).rejects.toThrow(
+      new NotFoundError(category.category_id.id, Category)
+    )
   })
 
   it('should update a entity', async () => {
