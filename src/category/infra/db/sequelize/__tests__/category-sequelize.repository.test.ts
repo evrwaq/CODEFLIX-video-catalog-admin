@@ -45,7 +45,7 @@ describe('CategorySequelizeRepository Integration Test', () => {
     expect(JSON.stringify(categories)).toBe(JSON.stringify([category]))
   })
 
-  it('should throw error on update when a entity not found', async () => {
+  it('should throw error on update when a entity is not found', async () => {
     const category = Category.fake().category().build()
     await expect(repository.update(category)).rejects.toThrow(
       new NotFoundError(category.category_id.id, Category)
@@ -61,5 +61,12 @@ describe('CategorySequelizeRepository Integration Test', () => {
 
     const categoryFound = await repository.findById(category.category_id)
     expect(category.toJSON()).toStrictEqual(categoryFound.toJSON())
+  })
+
+  it('should throw error on delete when a entity is not found', async () => {
+    const categoryId = new Uuid()
+    await expect(repository.delete(categoryId)).rejects.toThrow(
+      new NotFoundError(categoryId.id, Category)
+    )
   })
 })
