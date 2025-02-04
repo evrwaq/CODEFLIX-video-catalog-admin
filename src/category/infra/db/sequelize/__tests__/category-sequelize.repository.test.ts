@@ -43,4 +43,15 @@ describe('CategorySequelizeRepository Integration Test', () => {
     expect(categories).toHaveLength(1)
     expect(JSON.stringify(categories)).toBe(JSON.stringify([category]))
   })
+
+  it('should update a entity', async () => {
+    const category = Category.fake().category().build()
+    await repository.insert(category)
+
+    category.changeName('Movie updated')
+    await repository.update(category)
+
+    const categoryFound = await repository.findById(category.category_id)
+    expect(category.toJSON()).toStrictEqual(categoryFound.toJSON())
+  })
 })
