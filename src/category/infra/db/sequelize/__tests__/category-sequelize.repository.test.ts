@@ -119,5 +119,20 @@ describe('CategorySequelizeRepository Integration Test', () => {
         })
       )
     })
+
+    it('should order by created_at DESC when search params are null', async () => {
+      const created_at = new Date()
+      const categories = Category.fake()
+        .categories(16)
+        .withName((index) => `Movie ${index}`)
+        .withDescription(null)
+        .withCreatedAt((index) => new Date(created_at.getTime() + index))
+        .build()
+      const searchOutput = await repository.search(new CategorySearchParams())
+      const items = searchOutput.items
+      ;[...items].reverse().forEach((_item, index) => {
+        expect(`Movie ${index}`).toBe(`${categories[index + 1].name}`)
+      })
+    })
   })
 })
