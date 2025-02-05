@@ -4,6 +4,11 @@ import { CategorySequelizeRepository } from '../category-sequelize.repository'
 import { Category } from '../../../../domain/category.entity'
 import { Uuid } from '../../../../../shared/domain/value-objects/uuid.vo'
 import { NotFoundError } from '../../../../../shared/domain/errors/not-found.error'
+import { CategoryModelMapper } from '../category-model-mapper'
+import {
+  CategorySearchParams,
+  CategorySearchResult,
+} from '../../../../domain/category.repository'
 
 describe('CategorySequelizeRepository Integration Test', () => {
   let sequelize
@@ -77,5 +82,42 @@ describe('CategorySequelizeRepository Integration Test', () => {
     await repository.delete(category.category_id)
 
     await expect(repository.findById(category.category_id)).resolves.toBeNull()
+  })
+
+  describe('Search method tests', () => {
+    it('should only apply paginate when other params are null', async () => {
+      const created_at = new Date()
+      const categories = Category.fake()
+        .categories(16)
+        .withName('Movie')
+        .withDescription(null)
+        .withCreatedAt(created_at)
+        .build()
+      await repository.bulkInsert(categories)
+      const spyToEntity = jest.spyOn(CategoryModelMapper, 'toEntity')
+
+      const searchOutput = await repository.search(new CategorySearchParams())
+      expect(searchOutput).toBeInstanceOf(CategorySearchResult)
+      expect(spyToEntity).toHaveBeenCalledTimes(15)
+      expect(searchOutput.toJSON()).toMatchObject({
+        total: 16,
+        current_page: 1,
+        last_page: 2,
+        per_page: 15,
+      })
+      searchOutput.items.forEach((item) => {
+        expect(item).toBeInstanceOf(Category)
+        expect(item.category_id).toBeDefined()
+      })
+      const items = searchOutput.items.map((item) => item.toJSON())
+      expect(items).toMatchObject(
+        new Array(15).fill({
+          name: 'Movie',
+          description: null,
+          is_active: true,
+          created_at,
+        })
+      )
+    })
   })
 })
