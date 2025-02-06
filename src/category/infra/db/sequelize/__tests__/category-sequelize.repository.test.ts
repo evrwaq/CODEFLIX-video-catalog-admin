@@ -193,5 +193,80 @@ describe('CategorySequelizeRepository Integration Test', () => {
         }).toJSON(true)
       )
     })
+
+    it('should apply pagination and sort', async () => {
+      expect(repository.sortableFields).toStrictEqual(['name', 'created_at'])
+
+      const categories = [
+        Category.fake().category().withName('b').build(),
+        Category.fake().category().withName('a').build(),
+        Category.fake().category().withName('d').build(),
+        Category.fake().category().withName('e').build(),
+        Category.fake().category().withName('c').build(),
+      ]
+      await repository.bulkInsert(categories)
+
+      const arrange = [
+        {
+          params: new CategorySearchParams({
+            page: 1,
+            per_page: 2,
+            sort: 'name',
+          }),
+          result: new CategorySearchResult({
+            items: [categories[1], categories[0]],
+            total: 5,
+            current_page: 1,
+            per_page: 2,
+          }),
+        },
+        {
+          params: new CategorySearchParams({
+            page: 2,
+            per_page: 2,
+            sort: 'name',
+          }),
+          result: new CategorySearchResult({
+            items: [categories[4], categories[2]],
+            total: 5,
+            current_page: 2,
+            per_page: 2,
+          }),
+        },
+        {
+          params: new CategorySearchParams({
+            page: 1,
+            per_page: 2,
+            sort: 'name',
+            sort_dir: 'desc',
+          }),
+          result: new CategorySearchResult({
+            items: [categories[3], categories[2]],
+            total: 5,
+            current_page: 1,
+            per_page: 2,
+          }),
+        },
+        {
+          params: new CategorySearchParams({
+            page: 2,
+            per_page: 2,
+            sort: 'name',
+            sort_dir: 'desc',
+          }),
+          result: new CategorySearchResult({
+            items: [categories[4], categories[0]],
+            total: 5,
+            current_page: 2,
+            per_page: 2,
+          }),
+        },
+      ]
+
+      for (const index of arrange) {
+        const result = await repository.search(index.params)
+        expect(result.toJSON(true)).toMatchObject(index.result.toJSON(true))
+      }
+    })
   })
 })
