@@ -268,5 +268,58 @@ describe('CategorySequelizeRepository Integration Test', () => {
         expect(result.toJSON(true)).toMatchObject(index.result.toJSON(true))
       }
     })
+
+    describe('should search using filter, sort and pagination', () => {
+      const categories = [
+        Category.fake().category().withName('test').build(),
+        Category.fake().category().withName('a').build(),
+        Category.fake().category().withName('TEST').build(),
+        Category.fake().category().withName('e').build(),
+        Category.fake().category().withName('TeSt').build(),
+      ]
+
+      const arrange = [
+        {
+          search_params: new CategorySearchParams({
+            page: 1,
+            per_page: 2,
+            sort: 'name',
+            filter: 'TEST',
+          }),
+          search_result: new CategorySearchResult({
+            items: [categories[2], categories[4]],
+            total: 3,
+            current_page: 1,
+            per_page: 2,
+          }),
+        },
+        {
+          search_params: new CategorySearchParams({
+            page: 2,
+            per_page: 2,
+            sort: 'name',
+            filter: 'TEST',
+          }),
+          search_result: new CategorySearchResult({
+            items: [categories[0]],
+            total: 3,
+            current_page: 2,
+            per_page: 2,
+          }),
+        },
+      ]
+
+      beforeEach(async () => {
+        await repository.bulkInsert(categories)
+      })
+
+      test.each(arrange)(
+        'when value is $search_params',
+        async ({ search_params, search_result }) => {
+          const result = await repository.search(search_params)
+          expect(result.toJSON(true)).toMatchObject(search_result.toJSON(true))
+        }
+      )
+    })
   })
 })
