@@ -9,19 +9,13 @@ import {
   CategorySearchParams,
   CategorySearchResult,
 } from '../../../../domain/category.repository'
+import { setupSequelize } from '../../../../../shared/infra/testing/helpers'
 
 describe('CategorySequelizeRepository Integration Test', () => {
-  let sequelize
   let repository: CategorySequelizeRepository
+  setupSequelize({ models: [CategoryModel] })
 
   beforeEach(async () => {
-    sequelize = new Sequelize({
-      dialect: 'sqlite',
-      storage: ':memory',
-      models: [CategoryModel],
-      logging: false,
-    })
-    await sequelize.sync({ force: true })
     repository = new CategorySequelizeRepository(CategoryModel)
   })
 
