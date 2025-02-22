@@ -4,7 +4,6 @@ import { setupSequelize } from '../../../../shared/infra/testing/helpers'
 import { Category } from '../../../domain/category.entity'
 import { CategoryInMemoryRepository } from '../../../infra/db/in-memory/category-in-memory.repository'
 import { CategoryModel } from '../../../infra/db/sequelize/category.model'
-import { CreateCategoryUseCase } from '../../create-category.use-case'
 import { UpdateCategoryUseCase } from '../../update-category.use-case'
 
 describe('UpdateCategoryUseCase Integration Tests', () => {
