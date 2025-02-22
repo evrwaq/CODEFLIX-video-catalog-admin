@@ -23,4 +23,13 @@ describe('DeleteCategoryUseCase Integration Tests', () => {
       new NotFoundError(uuid.id, Category)
     )
   })
+
+  it('should delete a category', async () => {
+    const category = Category.fake().category().build()
+    await repository.insert(category)
+    await useCase.execute({
+      id: category.category_id.id,
+    })
+    await expect(repository.findById(category.category_id)).resolves.toBeNull()
+  })
 })
