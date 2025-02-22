@@ -27,4 +27,15 @@ describe('DeleteCategoryUseCase Unit Tests', () => {
       new NotFoundError(uuid.id, Category)
     )
   })
+
+  it('should delete a category', async () => {
+    const items = [new Category({ name: 'test' })]
+    repository.items = items
+
+    await useCase.execute({
+      id: items[0].category_id.id,
+    })
+
+    expect(repository.items).toHaveLength(0)
+  })
 })
