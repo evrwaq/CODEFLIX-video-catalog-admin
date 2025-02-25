@@ -24,4 +24,17 @@ describe('GetCategoryUseCase Integration Tests', () => {
       new NotFoundError(uuid.id, Category)
     )
   })
+
+  it('should return a category', async () => {
+    const category = Category.fake().category().build()
+    await repository.insert(category)
+    const output = await useCase.execute({ id: category.category_id.id })
+    expect(output).toStrictEqual({
+      id: category.category_id.id,
+      name: category.name,
+      description: category.description,
+      is_active: category.is_active,
+      created_at: category.created_at,
+    })
+  })
 })
