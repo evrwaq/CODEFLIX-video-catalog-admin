@@ -26,4 +26,20 @@ describe('GetCategoryUseCase Unit Tests', () => {
       new NotFoundError(uuid.id, Category)
     )
   })
+
+  it('should return a category', async () => {
+    const items = [Category.create({ name: 'Movie' })]
+    repository.items = items
+    const findByIdSpy = jest.spyOn(repository, 'findById')
+    const output = await useCase.execute({ id: items[0].category_id.id })
+
+    expect(findByIdSpy).toHaveBeenCalledTimes(1)
+    expect(output).toStrictEqual({
+      id: items[0].category_id.id,
+      name: 'Movie',
+      description: null,
+      is_active: true,
+      created_at: items[0].created_at,
+    })
+  })
 })
