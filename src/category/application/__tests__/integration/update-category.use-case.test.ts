@@ -2,18 +2,18 @@ import { NotFoundError } from '../../../../shared/domain/errors/not-found.error'
 import { Uuid } from '../../../../shared/domain/value-objects/uuid.vo'
 import { setupSequelize } from '../../../../shared/infra/testing/helpers'
 import { Category } from '../../../domain/category.entity'
-import { CategoryInMemoryRepository } from '../../../infra/db/in-memory/category-in-memory.repository'
+import { CategorySequelizeRepository } from '../../../infra/db/sequelize/category-sequelize.repository'
 import { CategoryModel } from '../../../infra/db/sequelize/category.model'
 import { UpdateCategoryUseCase } from '../../update-category.use-case'
 
 describe('UpdateCategoryUseCase Integration Tests', () => {
   let useCase: UpdateCategoryUseCase
-  let repository: CategoryInMemoryRepository
+  let repository: CategorySequelizeRepository
 
   setupSequelize({ models: [CategoryModel] })
 
   beforeEach(() => {
-    repository = new CategoryInMemoryRepository()
+    repository = new CategorySequelizeRepository(CategoryModel)
     useCase = new UpdateCategoryUseCase(repository)
   })
 

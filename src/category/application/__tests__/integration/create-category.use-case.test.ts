@@ -1,17 +1,17 @@
 import { Uuid } from '../../../../shared/domain/value-objects/uuid.vo'
 import { setupSequelize } from '../../../../shared/infra/testing/helpers'
-import { CategoryInMemoryRepository } from '../../../infra/db/in-memory/category-in-memory.repository'
+import { CategorySequelizeRepository } from '../../../infra/db/sequelize/category-sequelize.repository'
 import { CategoryModel } from '../../../infra/db/sequelize/category.model'
 import { CreateCategoryUseCase } from '../../create-category.use-case'
 
 describe('CreateCategoryUseCase Integration Tests', () => {
   let useCase: CreateCategoryUseCase
-  let repository: CategoryInMemoryRepository
+  let repository: CategorySequelizeRepository
 
   setupSequelize({ models: [CategoryModel] })
 
   beforeEach(() => {
-    repository = new CategoryInMemoryRepository()
+    repository = new CategorySequelizeRepository(CategoryModel)
     useCase = new CreateCategoryUseCase(repository)
   })
 
