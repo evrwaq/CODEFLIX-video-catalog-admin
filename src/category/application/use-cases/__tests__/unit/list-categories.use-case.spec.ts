@@ -46,4 +46,24 @@ describe('ListCategoriesUseCase Unit Tests', () => {
       last_page: 1,
     })
   })
+
+  it('should return output sorted by created_at when input param is empty', async () => {
+    const items = [
+      new Category({ name: 'test 1' }),
+      new Category({
+        name: 'test 2',
+        created_at: new Date(new Date().getTime() + 100),
+      }),
+    ]
+    repository.items = items
+
+    const output = await useCase.execute({})
+    expect(output).toStrictEqual({
+      items: [...items].reverse().map(CategoryOutputMapper.toOutput),
+      total: 2,
+      current_page: 1,
+      per_page: 15,
+      last_page: 1,
+    })
+  })
 })
